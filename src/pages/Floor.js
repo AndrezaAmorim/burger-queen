@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import firebase from '../utils/firebase'
-import Button from '../components/button'
-import Input from '../components/input'
+import firebase from '../utils/Firebase'
+import Button from '../components/Button'
+import Input from '../components/Input'
 import {StyleSheet, css} from 'aphrodite'
-import ItensList from '../components/itensList'
+import Order from '../components/Order'
+import Menu from '../components/Menu'
 
 
 export default function ShowMenu(){
@@ -14,7 +15,6 @@ export default function ShowMenu(){
   const [total, setTotal] = useState (0) 
   const [itensBreakfast, setItensBreakfast] = useState([]) 
   const [itensLunch, setItensLunch] = useState([]) 
-
 
   useEffect(() => {
 		firebase
@@ -38,6 +38,8 @@ export default function ShowMenu(){
  
   }
 
+  
+
   function sendOrder(){
     firebase
     .firestore()
@@ -59,7 +61,7 @@ export default function ShowMenu(){
 	return (
     <div className={css(styles.App)}>  
       <div className={css(styles.styleMenu)}>
-        <h1 className={css(styles.title)}>Menu</h1>
+        <h2 className={css(styles.title)}>Menu</h2>
         <div className={css(styles.btn)}>
           <Button className={css(styles.btnBreakfast)} 
             handleClick={(e) => { 
@@ -74,17 +76,18 @@ export default function ShowMenu(){
             }}title={"Almoço/Jantar"} 
           />
         </div>
-        {categoryItems.map((item) => <ItensList item={item} createOrder={createOrder}/>)}
+        {categoryItems.map((item) => <Menu item={item} createOrder={createOrder}/>)}
       </div>	
       <div className={css(styles.styleMenu)}>
+        <h2 className={css(styles.title)}>Pedidos</h2>
         <Input class ='input' label='Nome: ' type='text' value={client} 
           handleChange={e => setClient(e.currentTarget.value)} holder='Nome do Cliente' 
         />
         <Input class ='input' label='Mesa: ' type='text' value={table} 
           handleChange={e => setTable(e.currentTarget.value)} holder='Mesa do Cliente'
         />
-        {order.map((item) => <ItensList item={item} createOrder={createOrder}/>)}
-        <p>{total}</p>
+        {order.map((item) => <Order item={item} createOrder={createOrder}/>)}
+        <p>Total: {total + total}</p>
         <Button className={css(styles.btnLunch)} 
           handleClick={(e) => { 
             setOrder(sendOrder); 
@@ -108,7 +111,7 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign:"center",
-    fontSize: "40px",
+    fontSize: "35px",
     
   },
   btn: {
@@ -132,4 +135,14 @@ const styles = StyleSheet.create({
  
 
 
-
+// function () {
+  
+  //   const [counter, setCounter] = useState([]) 
+  
+  //   return (
+  //     <>
+  //       <p>{counter}</p>
+  //       <button onClick= {() => setCounter(counter+1)}>Contador</button>
+  //     </>
+  //   );
+  // }

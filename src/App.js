@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import ShowMenu from './pages/floor'
+import ShowMenu from './pages/Floor'
 
 
 function App() {
@@ -12,17 +12,7 @@ function App() {
   );
 }
 
-// function App2() {
-  
-//   const [counter, setCounter] = useState(0)
-  
-//   return (
-//     <>
-//       <p>{counter}</p>
-//       <button onClick= {() => setCounter(counter+1)}>Contador</button>
-//     </>
-//   );
-// }
+
 
 export default App;
 
