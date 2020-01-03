@@ -1,14 +1,109 @@
-import React, { useState, useEffect } from 'react'
-import firebase from '../utils/Firebase'
+import React, { useState, useEffect } from "react";
+import firebase from '../utils/Firebase';
+import { StyleSheet, css } from 'aphrodite'
 import Button from '../components/Button'
-import Input from '../components/Input'
-import {StyleSheet, css} from 'aphrodite'
-import Order from '../components/Order'
 import Menu from '../components/Menu'
+import Input from '../components/Input'
+import Order from '../components/Order'
 
+const styles = StyleSheet.create({
+  App: {
+    display:"flex",
+  },
 
-export default function ShowMenu(){
-	const [category, setCategory] = useState ("Café da manhã");
+  styleMenu: {
+    display: "flex",
+    flexDirection: "column",
+    width: "50%"
+  },
+
+  title: {
+    textAlign:"center",
+    fontSize: "40px",
+    color: "#7A67EE"
+  },
+
+  btnPosition: {
+    display:"flex",
+    justifyContent:"space-around"
+  },
+
+  btnMenu: {
+    color: "#fff",
+    backgroundColor:"#FF8247",
+    borderRadius:"15px",
+    width:"160px",
+    height:"75px",
+    fontSize:"20px",
+    fontWeight:"bold",
+
+    ':active': {
+      position:"relative",
+      top:"5px",
+      boxShadow:"none",
+    },
+
+    ':hover': {
+      backgroundColor: "rgb(221, 111, 38)",
+      color: "#fff" 
+    },
+  },
+
+  btnSend: {
+    color: "white",
+    backgroundColor:"#32CD32",
+    fontSize:"20px",
+    fontWeight:"bold",
+    borderRadius:"15px",
+    width:"150px",
+    height:"70px",
+    
+    ':active': {
+      position:"relative",
+      top:"5px",
+      boxShadow:"none",
+    },
+
+    ':hover': {
+      backgroundColor: "#7FFF00",
+      color: "#fff",
+      cursor: "pointer",
+    },
+  },
+
+  inputPosition: {
+   
+    display:"flex",
+    justifyContent:"space-around"
+  },
+
+  inputMenu:{
+   borderRadius:"13px",
+   width:"170px",
+   height:"35px",
+   textAlign:"center"
+  },
+
+  btnItensPosition:{
+    display:"flex",
+    flexWrap:"wrap",
+    justifyContent:"space-around",
+    height:"400px",
+    width:"90%px",
+  },
+
+  listItens:{
+    marginTop:"20px",
+    overflow:"auto",
+    width:"90%",
+    height:"400px",
+    marginLeft:"20px",
+  },
+})
+
+export default function ShowMenu(item){
+
+  const [category, setCategory] = useState ('Café da manhã')
   const [client, setClient] = useState('')
   const [table, setTable] = useState('')
   const [order, setOrder] = useState([])
@@ -17,28 +112,54 @@ export default function ShowMenu(){
   const [itensLunch, setItensLunch] = useState([]) 
 
   useEffect(() => {
-		firebase
-		.firestore()
-		.collection("Menu")
-		.get().then((snapshot) => {
-			const docMenu = snapshot.docs.map((doc) => ({
-				id: doc.id,
-				...doc.data()
-			}))      
-      setItensBreakfast(docMenu.filter(doc => doc.Category === "Café da manhã"));   
-			setItensLunch(docMenu.filter(doc => doc.Category === "Lanches"));   
       
-		})
+    firebase
+    .firestore()
+    .collection("Menu")
+    .get().then((snapshot) => {
+      const docMenu = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+      }))      
+      setItensBreakfast(docMenu.filter(doc => doc.Category === "Café da manhã"));   
+      setItensLunch(docMenu.filter(doc => doc.Category === "Lanches"));   
+      
+    })
   }, []) 
   
   const categoryItems = category === "Lanches" ? itensLunch : itensBreakfast;
 
-  function createOrder(item){
-    setOrder([...order, item])
- 
+  function addItem(item){ 
+    const itemIndex = order.findIndex((el) => el.id === item.id);
+    if (itemIndex === -1) {
+      setOrder([...order, { ...item, count: 1 }])
+    } else {
+      const newOrder = [...order];
+      newOrder[itemIndex].count += 1;
+      setOrder(newOrder);
+      console.log(newOrder)
+    }
+    setTotal(total + (item.Price ))
   }
 
-  
+  function minusItem(item) {
+    const itemIndex = order.findIndex((el) => el.id === item.id);
+    const itemCount = order[itemIndex];
+    if (itemCount.count === 1) {
+      removeItem(itemCount)
+    } else {
+      itemCount.count += -1;
+      setOrder([...order]);
+    }
+    setTotal(total - (item.Price))
+  }
+
+  function removeItem(item) {
+    const index = (order.indexOf(item));
+    order.splice(index, 1);
+    setOrder([...order]);
+    setTotal(total - (item.Price * item.count))
+  }
 
   function sendOrder(){
     firebase
@@ -54,95 +175,59 @@ export default function ShowMenu(){
       setClient('')
       setTable('')
       setOrder([])
-      setTotal([])
+      setTotal()
+    })
+    .catch(err =>{
+      console.log(err)
     })
   }
 
-	return (
+  return (
     <div className={css(styles.App)}>  
       <div className={css(styles.styleMenu)}>
         <h2 className={css(styles.title)}>Menu</h2>
-        <div className={css(styles.btn)}>
-          <Button className={css(styles.btnBreakfast)} 
+        <div className={css(styles.btnPosition)}>
+          <Button className={css(styles.btnMenu) } 
             handleClick={(e) => { 
               setCategory("Café da manhã"); 
               e.preventDefault() 
             }}title={"Café da Manhã"} 
           />
-          <Button className={css(styles.btnLunch)} 
+          <Button className={css(styles.btnMenu)} 
             handleClick={(e) => { 
               setCategory("Lanches"); 
               e.preventDefault() 
             }}title={"Almoço/Jantar"} 
           />
         </div>
-        {categoryItems.map((item) => <Menu item={item} createOrder={createOrder}/>)}
-      </div>	
+        <div className={css(styles.btnItensPosition)}>
+          {categoryItems.map((item) => <Menu key={item.id} item={item} addItem={addItem}/>)}
+        </div>
+      </div>
+      
       <div className={css(styles.styleMenu)}>
         <h2 className={css(styles.title)}>Pedidos</h2>
-        <Input class ='input' label='Nome: ' type='text' value={client} 
-          handleChange={e => setClient(e.currentTarget.value)} holder='Nome do Cliente' 
-        />
-        <Input class ='input' label='Mesa: ' type='text' value={table} 
-          handleChange={e => setTable(e.currentTarget.value)} holder='Mesa do Cliente'
-        />
-        {order.map((item) => <Order item={item} createOrder={createOrder}/>)}
-        <p>Total: {total + total}</p>
-        <Button className={css(styles.btnLunch)} 
-          handleClick={(e) => { 
-            setOrder(sendOrder); 
-            e.preventDefault() 
-          }}title={"Enviar"} 
-        />
+        <div className={css(styles.inputPosition)}>
+          <Input className={css(styles.inputMenu)} holder='Cliente' type='text' value={client} 
+            handleChange={e => setClient(e.currentTarget.value)} 
+          />
+          <Input className ={css(styles.inputMenu)} holder='Mesa' type='text' value={table} 
+            handleChange={e => setTable(e.currentTarget.value)}
+          />
+        </div>
+        <div className={css(styles.listItens)}>
+          {order.map((item) => <Order key={item.id} item={item} addItem={addItem} 
+          minusItem={minusItem} removeItem={removeItem}/>)}
+        </div>
+        <p>Total {total.toLocaleString("pt-BR", {style: "currency", currency: "BRL"})}</p>
+       <Button className={css(styles.btnSend)} 
+         handleClick={(e) => { 
+           setOrder(sendOrder); 
+           e.preventDefault() 
+         }}title={"Enviar"} 
+       />
       </div>
-    </div>		  
-	);
+    </div>
+  ) 
 }
 
-const styles = StyleSheet.create({
-  App: {
-    display:"flex",
-
-  },
-  styleMenu: {
-    display: "flex",
-    flexDirection: "column",
-    width: "50%"
-  },
-  title: {
-    textAlign:"center",
-    fontSize: "35px",
-    
-  },
-  btn: {
-    fontSize:"20px",
-    marginLeft: "10%",
-    marginBottom: "5%"
-  },
-  btnBreakfast: {
-    color: "red",
-    width: "20%",
-    marginRight: "5%"    
-  },
-  btnLunch: {
-    color: "blue",
-    width: "20%"    
-  },
-  
-})
-	
-		
- 
-
-
-// function () {
-  
-  //   const [counter, setCounter] = useState([]) 
-  
-  //   return (
-  //     <>
-  //       <p>{counter}</p>
-  //       <button onClick= {() => setCounter(counter+1)}>Contador</button>
-  //     </>
-  //   );
-  // }

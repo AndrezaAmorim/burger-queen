@@ -1,10 +1,10 @@
 import React from 'react';
 
-function Input(props) {
+export default function Input(props) {
   return (
-    <div className={props.class}>
-      <label>{props.label}</label>
+    <div className={props.className}>
       <input type={props.type} 
+        className={props.className}
         value={props.value} 
         onChange={props.handleChange} 
         placeholder={props.holder} 
@@ -12,5 +12,3 @@ function Input(props) {
     </div>
   )
 }
-
-export default Input
