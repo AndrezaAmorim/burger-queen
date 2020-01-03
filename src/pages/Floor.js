@@ -5,6 +5,8 @@ import Button from '../components/Button'
 import Menu from '../components/Menu'
 import Input from '../components/Input'
 import Order from '../components/Order'
+import growl from 'growl-alert'
+import 'growl-alert/dist/growl-alert.css'
 
 const styles = StyleSheet.create({
   App: {
@@ -162,24 +164,27 @@ export default function ShowMenu(item){
   }
 
   function sendOrder(){
-    firebase
-    .firestore()
-    .collection("Orders")
-    .add({
-      client,
-      table,
-      order,
-      total
-    })
-    .then(() => {
-      setClient('')
-      setTable('')
-      setOrder([])
-      setTotal()
-    })
-    .catch(err =>{
-      console.log(err)
-    })
+    
+    if(client && table){
+      firebase
+      .firestore()
+      .collection("Orders")
+      .add({
+        client,
+        table,
+        order,
+        total
+      })
+      .then(() => {
+        growl.success("Pedido enviado")
+        setClient('')
+        setTable('')
+        setOrder([])
+        setTotal()
+      })
+    }else {
+      growl.warning("Preencha nome e mesa")
+    }
   }
 
   return (
@@ -219,10 +224,11 @@ export default function ShowMenu(item){
           {order.map((item) => <Order key={item.id} item={item} addItem={addItem} 
           minusItem={minusItem} removeItem={removeItem}/>)}
         </div>
-        <p>Total {total.toLocaleString("pt-BR", {style: "currency", currency: "BRL"})}</p>
+          <div>Total {total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</div>
+          {/* <div>Total R$ {total}</div> */}
        <Button className={css(styles.btnSend)} 
          handleClick={(e) => { 
-           setOrder(sendOrder); 
+           sendOrder()
            e.preventDefault() 
          }}title={"Enviar"} 
        />
