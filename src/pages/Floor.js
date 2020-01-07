@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 
   title: {
     textAlign:"center",
-    fontSize: "40px",
+    fontSize: "35px",
     color: "#7A67EE"
   },
 
@@ -196,7 +196,7 @@ export default function ShowMenu(item){
         setClient('')
         setTable('')
         setOrder([])
-        setTotal()
+        setTotal(0)
       })
     }else {
       growl.warning("Preencha nome e mesa")

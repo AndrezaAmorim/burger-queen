@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
 export default function Order (props) {
 
   return (
-    <div key={props.item.id}>
+    <div>
       <div className={css(styles.listOrder)}>
         <span>{props.item.Name} </span>
         <div className={css(styles.listOption)}>
