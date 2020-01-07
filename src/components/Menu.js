@@ -30,13 +30,13 @@ const styles = StyleSheet.create({
 export default function Menu (props) {
   
   return (
-    <div>
-      <Button  className={css(styles.btnItens)} 
-        id={props.id}
-        Name={props.item.Name}
-        Price={props.item.Price.toLocaleString("pt-BR", {style: "currency", currency: "BRL"})}
-        handleClick={() => props.addItem(props.item)}
-      />
-    </div>
+    
+    <Button  className={css(styles.btnItens)} 
+      id={props.id}
+      Name={props.item.Name}
+      Price={props.item.Price.toLocaleString("pt-BR", {style: "currency", currency: "BRL"})}
+      handleClick={() => props.addItem(props.item)}
+    />
+    
   )
 }

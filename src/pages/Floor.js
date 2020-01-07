@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
   styleMenu: {
     display: "flex",
     flexDirection: "column",
-    width: "50%"
+    width: "50%",
+    
   },
 
   title: {
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     backgroundColor:"#FF8247",
     borderRadius:"15px",
-    width:"160px",
+    width:"30%",
     height:"75px",
     fontSize:"20px",
     fontWeight:"bold",
@@ -59,6 +60,8 @@ const styles = StyleSheet.create({
     borderRadius:"15px",
     width:"150px",
     height:"70px",
+    marginTop:"20px",
+    marginLeft:"12px",
     
     ':active': {
       position:"relative",
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
   inputPosition: {
    
     display:"flex",
-    justifyContent:"space-around"
+    justifyContent:"space-evenly"
   },
 
   inputMenu:{
@@ -89,18 +92,26 @@ const styles = StyleSheet.create({
   btnItensPosition:{
     display:"flex",
     flexWrap:"wrap",
-    justifyContent:"space-around",
-    height:"400px",
-    width:"90%px",
+    justifyContent:"space-evenly",
+    height:"20%",
+    width:"100%",
   },
 
   listItens:{
     marginTop:"20px",
+    marginBottom:"20px",
     overflow:"auto",
     width:"90%",
-    height:"400px",
+    height:"370px",
     marginLeft:"20px",
   },
+
+  total:{
+    fontWeight:"bold",
+    fontSize:"18px",
+    marginLeft:"14px",
+    
+  }
 })
 
 export default function ShowMenu(item){
@@ -112,6 +123,7 @@ export default function ShowMenu(item){
   const [total, setTotal] = useState (0) 
   const [itensBreakfast, setItensBreakfast] = useState([]) 
   const [itensLunch, setItensLunch] = useState([]) 
+  const [itensExtras, setItensExtras] = useState([])
 
   useEffect(() => {
       
@@ -124,12 +136,15 @@ export default function ShowMenu(item){
         ...doc.data()
       }))      
       setItensBreakfast(docMenu.filter(doc => doc.Category === "Café da manhã"));   
-      setItensLunch(docMenu.filter(doc => doc.Category === "Lanches"));   
+      setItensLunch(docMenu.filter(doc => doc.Category === "Lanches"));
+      setItensExtras(docMenu.filter(doc => doc.Category === "Extras"))   
       
     })
   }, []) 
   
-  const categoryItems = category === "Lanches" ? itensLunch : itensBreakfast;
+  const firstCheck = category === "Lanches",
+  secondCheck = category ==="Café da manhã",
+  categoryItems = firstCheck ? itensLunch :secondCheck ?itensBreakfast:itensExtras
 
   function addItem(item){ 
     const itemIndex = order.findIndex((el) => el.id === item.id);
@@ -139,7 +154,7 @@ export default function ShowMenu(item){
       const newOrder = [...order];
       newOrder[itemIndex].count += 1;
       setOrder(newOrder);
-      console.log(newOrder)
+     
     }
     setTotal(total + (item.Price ))
   }
@@ -152,6 +167,7 @@ export default function ShowMenu(item){
     } else {
       itemCount.count += -1;
       setOrder([...order]);
+      
     }
     setTotal(total - (item.Price))
   }
@@ -204,6 +220,12 @@ export default function ShowMenu(item){
               e.preventDefault() 
             }}title={"Almoço/Jantar"} 
           />
+          <Button className={css(styles.btnMenu)} 
+            handleClick={(e) => { 
+              setCategory("Extras"); 
+              e.preventDefault() 
+            }}title={"Extras"} 
+          />
         </div>
         <div className={css(styles.btnItensPosition)}>
           {categoryItems.map((item) => <Menu key={item.id} item={item} addItem={addItem}/>)}
@@ -224,9 +246,9 @@ export default function ShowMenu(item){
           {order.map((item) => <Order key={item.id} item={item} addItem={addItem} 
           minusItem={minusItem} removeItem={removeItem}/>)}
         </div>
-          <div>Total {total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</div>
-          {/* <div>Total R$ {total}</div> */}
-       <Button className={css(styles.btnSend)} 
+          <div className={css(styles.total)}>
+            Total {total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</div>
+          <Button className={css(styles.btnSend)} 
          handleClick={(e) => { 
            sendOrder()
            e.preventDefault() 
