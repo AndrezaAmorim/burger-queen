@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import firebase from '../utils/Firebase';
+import OrderCard from '../components/OrderCard'
 
 export default function Kitchen () {
 
-  const [order, setOrder] = useState([])
+  const [KitchenOrder, setKitchenOrder] = useState([])
 
   useEffect(() => {
     
@@ -11,16 +12,34 @@ export default function Kitchen () {
     .firestore()
     .collection("Orders")
     .get().then((snapshot) => {
-      const docOrders = snapshot.docs.map((doc) => ({
+      const docOrder = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data()
       }))      
-      // setOrder(docOrders.map((item)=>) );
+      setKitchenOrder(docOrder)
       
     })
   }, []) 
 
   return(
-    <h1>teste</h1>
+    <div>
+      {KitchenOrder.map((item)=>
+        <OrderCard 
+          key={item.id}
+          table={item.table}
+          client={item.client}
+          total={item.total}
+          order={item.order.map((item, index) => {
+            return(
+              <div key={index}>
+                {item.Name}
+                {item.count}
+                
+              </div>
+            )
+          })}
+        />
+      )}
+    </div>
   )
 }
