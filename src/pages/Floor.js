@@ -9,15 +9,20 @@ import growl from 'growl-alert'
 import 'growl-alert/dist/growl-alert.css'
 
 const styles = StyleSheet.create({
-  App: {
+  floorPage: {
     display:"flex",
+  
   },
 
   styleMenu: {
     display: "flex",
     flexDirection: "column",
     width: "50%",
-    marginTop:"2%"
+    marginTop:"2%",
+    marginLeft:"1%",
+    marginRight:"1%",
+    borderRadius:"5px",
+    border:"1px solid grey",
     
   },
 
@@ -61,8 +66,9 @@ const styles = StyleSheet.create({
     borderRadius:"15px",
     width:"150px",
     height:"70px",
-    marginTop:"20px",
-    marginLeft:"12px",
+    marginTop:"10px",
+    marginLeft:"170px",
+    marginBottom:"10px",
     
     ':active': {
       position:"relative",
@@ -93,9 +99,11 @@ const styles = StyleSheet.create({
   btnItensPosition:{
     display:"flex",
     flexWrap:"wrap",
-    justifyContent:"space-evenly",
+    justifyContent:"center",
     height:"20%",
     width:"100%",
+    
+    
   },
 
   listItens:{
@@ -103,14 +111,14 @@ const styles = StyleSheet.create({
     marginBottom:"20px",
     overflow:"auto",
     width:"90%",
-    height:"370px",
+    height:"350px",
     marginLeft:"20px",
   },
 
   total:{
     fontWeight:"bold",
     fontSize:"18px",
-    marginLeft:"14px",
+    marginLeft:"190px",
     
   }
 })
@@ -203,7 +211,7 @@ export default function ShowMenu(item){
   }
 
   return (
-    <div className={css(styles.App)}>  
+    <div className={css(styles.floorPage)}>  
       <div className={css(styles.styleMenu)}>
         <h2 className={css(styles.title)}>Menu</h2>
         <div className={css(styles.btnPosition)}>
@@ -226,7 +234,7 @@ export default function ShowMenu(item){
       </div>
       
       <div className={css(styles.styleMenu)}>
-        <h2 className={css(styles.title)}>Pedidos</h2>
+        <h2 className={css(styles.title)}>Pedido</h2>
         <div className={css(styles.inputPosition)}>
           <Input className={css(styles.inputMenu)} holder='Cliente' type='text' value={client} 
             handleChange={e => setClient(e.currentTarget.value)} 
