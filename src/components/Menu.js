@@ -8,11 +8,11 @@ const styles = StyleSheet.create({
     color: "#1C1C1C",
     backgroundColor:"#FFFAF0",
     borderRadius:"15px",
-    width:"160px",
-    height:"60px",
+    width:"150px",
+    height:"75px",
     fontSize:"15px",
     marginTop:"15px",
-
+   
     ':active': {
       position:"relative",
       top:"5px",
@@ -101,18 +101,18 @@ export default function Menu(props) {
           ? <div className={css(styles.modalBackground)} onClick={() => setShow(!show)} >
               <div className={css(styles.modal)} onClick={(e) => e.stopPropagation()}>
                 {props.item.Extras.map((extra, index) => {
-                    return (
-                      <div key={index}>
-                        <label>{extra.Name} {extra.Price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</label>
-                        <input className={css(styles.inputModal)}
-                          type="radio" 
-                          value={extra.Name} 
-                          onChange={() => 
-                          setSelectedExtra(extra.Name)} 
-                          checked={extra.Name === selectedExtra}
-                        />
-                      </div>
-                    )
+                  return (
+                    <div key={index}>
+                      <label>{extra.Name} {extra.Price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</label>
+                      <input className={css(styles.inputModal)}
+                        type="radio" 
+                        value={extra.Name} 
+                        onChange={() => 
+                        setSelectedExtra(extra.Name)} 
+                        checked={extra.Name === selectedExtra}
+                      />
+                    </div>
+                  )
                 })}
                   <Button className={css(styles.btnAdd)}
                     handleClick={(e) => {
