@@ -7,25 +7,29 @@ const styles = StyleSheet.create({
 	navbar: {
 		
     display:"flex",
-    marginLeft:"10%",
+    marginLeft:"70%",
     height:"40%",
-    marginTop:"2%"
+    width:"100%",
+    marginTop:"2%",
+    
     
   },
   
   styleLi: {
     listStyle: 'none',
     display:"inline",
-    marginRight:"180%",
+    marginRight:"30%",
     fontSize:"25px",
-    border:"solid"
+    
     
     
   },
 
   styleLink:{
+    fontWeight:"bold",
     textDecoration:"none",
-    color:"black",
+    color:"grey"
+    
     
   }
 	
