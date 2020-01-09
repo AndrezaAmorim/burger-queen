@@ -17,13 +17,14 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     width: "50%",
+    marginTop:"2%"
     
   },
 
   title: {
     textAlign:"center",
     fontSize: "35px",
-    color: "#7A67EE"
+    color: "grey"
   },
 
   btnPosition: {
@@ -123,8 +124,7 @@ export default function ShowMenu(item){
   const [total, setTotal] = useState (0) 
   const [itensBreakfast, setItensBreakfast] = useState([]) 
   const [itensLunch, setItensLunch] = useState([]) 
-  const [itensExtras, setItensExtras] = useState([])
-
+  
   useEffect(() => {
       
     firebase
@@ -137,30 +137,27 @@ export default function ShowMenu(item){
       }))      
       setItensBreakfast(docMenu.filter(doc => doc.Category === "Café da manhã"));   
       setItensLunch(docMenu.filter(doc => doc.Category === "Lanches"));
-      setItensExtras(docMenu.filter(doc => doc.Category === "Extras"))   
-      
     })
   }, []) 
   
-  const firstCheck = category === "Lanches",
-  secondCheck = category ==="Café da manhã",
-  categoryItems = firstCheck ? itensLunch :secondCheck ?itensBreakfast:itensExtras
+  const categoryItems = category ==="Lanches" ? itensLunch : itensBreakfast
 
-  function addItem(item){ 
-    const itemIndex = order.findIndex((el) => el.id === item.id);
+  function addItem(item, extra){ 
+    const itemIndex = order.findIndex((el) => el.id === item.id && el.extra ===extra);
     if (itemIndex === -1) {
-      setOrder([...order, { ...item, count: 1 }])
+      setOrder([...order, { ...item, count: 1, extra }])
     } else {
       const newOrder = [...order];
       newOrder[itemIndex].count += 1;
       setOrder(newOrder);
      
     }
-    setTotal(total + (item.Price ))
+    const extraPrice = extra ? 1:0;
+    setTotal(total + (item.Price + extraPrice ))
   }
 
-  function minusItem(item) {
-    const itemIndex = order.findIndex((el) => el.id === item.id);
+  function minusItem(item, extra) {
+    const itemIndex = order.findIndex((el) => el.id === item.id && el.extra ===extra);
     const itemCount = order[itemIndex];
     if (itemCount.count === 1) {
       removeItem(itemCount)
@@ -169,14 +166,16 @@ export default function ShowMenu(item){
       setOrder([...order]);
       
     }
-    setTotal(total - (item.Price))
+    const extraPrice = extra ? 1:0;
+    setTotal(total - (item.Price + extraPrice))
   }
 
   function removeItem(item) {
     const index = (order.indexOf(item));
+    const extraPrice = item.extra ? 1 : 0
     order.splice(index, 1);
     setOrder([...order]);
-    setTotal(total - (item.Price * item.count))
+    setTotal(total - ((item.Price  + extraPrice) * item.count))
   }
 
   function sendOrder(){
@@ -219,12 +218,6 @@ export default function ShowMenu(item){
               setCategory("Lanches"); 
               e.preventDefault() 
             }}title={"Almoço/Jantar"} 
-          />
-          <Button className={css(styles.btnMenu)} 
-            handleClick={(e) => { 
-              setCategory("Extras"); 
-              e.preventDefault() 
-            }}title={"Extras"} 
           />
         </div>
         <div className={css(styles.btnItensPosition)}>

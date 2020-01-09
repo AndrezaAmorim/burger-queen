@@ -1,6 +1,26 @@
 import React, { useState, useEffect } from "react";
 import firebase from '../utils/Firebase';
 import OrderCard from '../components/OrderCard'
+import {StyleSheet, css} from 'aphrodite'
+
+const styles = StyleSheet.create({
+
+  cardOrder:{
+    backgroundColor:"white",
+    
+    
+  },
+
+  cardContainer:{
+    border:"solid",
+    backgroundColor:"red",
+    width:"50%"
+    
+  },
+
+  
+
+})
 
 export default function Kitchen () {
 
@@ -22,7 +42,8 @@ export default function Kitchen () {
   }, []) 
 
   return(
-    <div>
+    <div className={css(styles.cardContainer)} >
+      
       {KitchenOrder.map((item)=>
         <OrderCard 
           key={item.id}
@@ -31,7 +52,7 @@ export default function Kitchen () {
           total={item.total}
           order={item.order.map((item, index) => {
             return(
-              <div key={index}>
+              <div key={index} className={css(styles.cardOrder)}>
                 {item.Name}
                 {item.count}
                 

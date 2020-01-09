@@ -3,7 +3,7 @@ import {StyleSheet, css} from 'aphrodite'
 import Button from './Button'
 
 const styles = StyleSheet.create({
-  add: {
+  btnAdd: {
     fontSize:"25px",
     fontWeight:"bold",
     backgroundColor:"#32CD32",
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     },
   },
 
-  removeItem: {
+  btnRemoveItem: {
     width:"40px",
     height:"40px",
     backgroundColor:"#F8F8FF",
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     
   },
 
-  minusItem: {
+  btnMinusItem: {
     backgroundColor:"#FF3030",
     color: "white",
     borderRadius:"20px",
@@ -66,29 +66,34 @@ const styles = StyleSheet.create({
 
 export default function Order (props) {
 
+  const extraPrice = props.item.extra ? 1 : 0
+  const itemPrice = props.item.Price + extraPrice
+
   return (
     <div>
       <div className={css(styles.listOrder)}>
         <span>{props.item.Name} </span>
+        <span> + {props.item.extra} </span>
+        {itemPrice.toLocaleString("pt-BR", { style:"currency", currency: "BRL"})}
         <div className={css(styles.listOption)}>
           
-          <Button className={css(styles.minusItem)} 
+          <Button className={css(styles.btnMinusItem)} 
             handleClick={(e) => 
-              {props.minusItem(props.item)
+              {props.minusItem(props.item, props.item.extra)
               e.preventDefault()
             }} title={"-"}
           />
           
           {props.item.count}
 
-          <Button className={css(styles.add)} 
+          <Button className={css(styles.btnAdd)} 
             handleClick={(e) => {
-              props.addItem(props.item) 
+              props.addItem(props.item, props.item.extra) 
               e.preventDefault()
             }} title={"+"} 
           />
 
-          <Button className={css(styles.removeItem)} 
+          <Button className={css(styles.btnRemoveItem)} 
             handleClick={(e) => {
               props.removeItem(props.item) 
               e.preventDefault()
