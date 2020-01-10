@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     backgroundColor:"#FF8247",
     borderRadius:"15px",
-    width:"30%",
+    width:"35%",
     height:"75px",
     fontSize:"20px",
     fontWeight:"bold",
@@ -132,7 +132,7 @@ export default function ShowMenu(item){
   const [total, setTotal] = useState (0) 
   const [itensBreakfast, setItensBreakfast] = useState([]) 
   const [itensLunch, setItensLunch] = useState([]) 
-  
+    
   useEffect(() => {
       
     firebase
@@ -153,7 +153,11 @@ export default function ShowMenu(item){
   function addItem(item, extra){ 
     const itemIndex = order.findIndex((el) => el.id === item.id && el.extra ===extra);
     if (itemIndex === -1) {
-      setOrder([...order, { ...item, count: 1, extra }])
+      if(extra){
+        setOrder([...order, { ...item, count: 1, extra }])
+      }else{
+      setOrder([...order, { ...item, count: 1 }])
+      }
     } else {
       const newOrder = [...order];
       newOrder[itemIndex].count += 1;
@@ -196,7 +200,9 @@ export default function ShowMenu(item){
         client,
         table,
         order,
-        total
+        total,
+        status:"pending",
+        addTime: new Date().getTime()
       })
       .then(() => {
         growl.success("Pedido enviado")
