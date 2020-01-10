@@ -4,45 +4,18 @@ import Button from './Button'
 
 const styles = StyleSheet.create({
 
-  cardInfo:{
-    
-    border:" 1px solid black ",
-    borderRadius:"5px",
-    marginBottom:"20px",
-    flexWrap:"wrap",
-    width:"70%",
-    textAlign:"center",
-    fontSize:"20px"
-    
+  styleName:{
+    fontSize:"25px",
+    color:"#363636",
+    fontWeight:"bold",
+    marginBottom:"2%"
   },
 
-  btnSend: {
-    color: "white",
-    backgroundColor:"#32CD32",
-    fontSize:"20px",
+  styleTable:{
+    marginBottom:"2%",
     fontWeight:"bold",
-    borderRadius:"15px",
-    width:"150px",
-    height:"40px",
-    marginTop:"10px",
-    marginLeft:"10px",
-    marginBottom:"10px",
-    
-    ':active': {
-      position:"relative",
-      top:"5px",
-      boxShadow:"none",
-    },
-
-    ':hover': {
-      backgroundColor: "#7FFF00",
-      color: "#fff",
-      cursor: "pointer",
-    },
-  } 
-
-
-  
+    color:"#363636"
+  },
 
 })
 
@@ -50,19 +23,16 @@ export default function OrderCard(props){
 
   return(
     
-      <div className={css(styles.cardInfo)}>
-        Mesa: {props.table}
-        Cliente: {props.client}
-        {props.order}
-
-        <Button className={css(styles.btnSend)} 
-         handleClick={(e) => { 
-           e.preventDefault() 
-         }}title={"Enviar"} 
-        />
-        
+    <>
+      <div className={css(styles.styleName)}>
+        {props.client}
       </div>
-    
-
+      <div className={css(styles.styleTable)}>
+        Mesa: {props.table}
+      </div>
+      
+      {props.order}
+      
+    </>
   )
 }

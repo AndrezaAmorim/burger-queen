@@ -1,12 +1,13 @@
 import React from 'react';
-import Floor from './pages/Floor';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
-import Kitchen from './pages/Kitchen';
 import Navbar from './components/Nav';
+import Floor from './pages/Floor';
+import Kitchen from './pages/Kitchen';
+import Server from './pages/Server'
 
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
       <Switch>
         <Route exact path="/" component={Floor} />
         <Route path="/kitchen" component={Kitchen} />
+        {/* <Route path="/server" component={Server} /> */}
       </Switch>
     </Router>
   );
