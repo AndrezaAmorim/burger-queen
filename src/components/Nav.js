@@ -48,7 +48,7 @@ export default function Navbar() {
 					<Link to="/kitchen" className={css(styles.styleLink)}>Cozinha</Link>
 				</li>
         <li className={css(styles.styleLi)}>
-					<Link to="/server" className={css(styles.styleLink)}>Pedidos</Link>
+					<Link to="/bartender" className={css(styles.styleLink)}>Pedidos</Link>
 				</li>
 			</ul>
 		</nav>
