@@ -7,7 +7,7 @@ import {
 import Navbar from './components/Nav';
 import Floor from './pages/Floor';
 import Kitchen from './pages/Kitchen';
-import Server from './pages/Server'
+import Bartender from './pages/Bartender'
 
 
 export default function App() {
@@ -17,7 +17,7 @@ export default function App() {
       <Switch>
         <Route exact path="/" component={Floor} />
         <Route path="/kitchen" component={Kitchen} />
-        {/* <Route path="/server" component={Server} /> */}
+        <Route path="/bartender" component={Bartender} />
       </Switch>
     </Router>
   );

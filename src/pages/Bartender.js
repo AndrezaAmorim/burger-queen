@@ -12,8 +12,7 @@ const styles = StyleSheet.create({
   cardOrder:{
     backgroundColor:"white",
     
-    
-    
+
     
   },
   
@@ -24,8 +23,8 @@ const styles = StyleSheet.create({
     fontSize:"20px",
     fontWeight:"bold",
     borderRadius:"15px",
-    width:"150px",
-    height:"40px",
+    width:"160px",
+    height:"50px",
     marginTop:"10px",
     marginLeft:"10px",
     marginBottom:"10px",
@@ -73,7 +72,7 @@ const styles = StyleSheet.create({
     color: "grey"
   },
 
-  kitchenPage:{
+  bartenderPage:{
     display:"flex",
     width:"96%"
   },
@@ -99,11 +98,10 @@ const option = {
   fadeAwayTimeout:2000,
 };
 
-export default function Kitchen () {
-
-  
-  const [pending, setPending] = useState ([])
-  const [done, setDone] = useState([])
+export default function Bartender () {
+   
+  const [done, setDone] = useState([]); 
+  const [delivered, setDelivered] = useState([])
 
   useEffect(() => {
     
@@ -117,32 +115,30 @@ export default function Kitchen () {
         ...doc.data()
       }))      
       
-      setPending(docOrder.filter(doc => doc.status === "pending"))
-      setDone(docOrder.filter((doc) => doc.status === "done"))
+      setDone(docOrder.filter(doc => doc.status === 'done'))
+      setDelivered(docOrder.filter(doc => doc.status === 'delivered'))
       
       
     })
   }, []) 
-  
 
-  function orderDone (item) {
-    
+  function orderDelivered(item){
     firebase
     .firestore()
-    .collection("Orders")
+    .collection('Orders')
     .doc(item.id)
     .update({
-      
-      status:"done",
+      status: 'delivered',
       time: new Date().getTime()
     })
-    const newPending = pending.filter((el) => el.id !== item.id);
-    setPending(newPending);
 
-    const newDone = [...done, {...item, status: "done", time: new Date().getTime()}];
-    setDone(newDone)
+    const newDone = done.filter((el) => el.id !== item.id);
+    setDone(newDone);
 
-    growl.success({ text: "Pronto para entrega", ...option})
+    const newDelivered = [...delivered, {...item, status: 'delivered', time: new Date().getTime()}];
+    setDelivered(newDelivered);
+
+    growl.success({ text: "Pedido entregue", ...option})
   }
 
   function time(readyTime, orderTime){
@@ -151,24 +147,21 @@ export default function Kitchen () {
   }
 
   return(
-    <div className={css(styles.kitchenPage)}>
+    <div className={css(styles.bartenderPage)}>
       <div className={css(styles.cardContainer)} >
-        <h1 className={css(styles.title)}>Pedidos Pendentes</h1>
+        <h1 className={css(styles.title)}>Pedidos Prontos</h1>
         <div className={css(styles.orderContainer)}>
-          {pending.map((item)=>
+          {done.map((item)=>
           <div key={item.id} className={css(styles.cardInfo)}>
             <OrderCard 
-              sendTime={new Date(item.sendTime).toLocaleTimeString("pt-BR")}
               table={item.table}
               client={item.client}
-              total={item.total}
-              orderDone={() => orderDone(item)}
               order={item.order.map((item, index) => {
                 return(
                   
                   <div key={index} className={css(styles.cardOrder)}>
-                    {item.Name}
                     {item.count}
+                    {item.Name} {item.extra}
 
                     
                   </div>
@@ -182,9 +175,9 @@ export default function Kitchen () {
             <Button className={css(styles.btnSend)} 
                   handleClick={(e) => { 
                     
-                    orderDone(item)
+                    orderDelivered(item)
                     e.preventDefault() 
-                  }}title={"Pronto"} 
+                  }}title={"Pedido Entregue"} 
                   />
             </div>
           )}
@@ -192,21 +185,21 @@ export default function Kitchen () {
         </div>  
       </div>
       <div className={css(styles.cardContainer)} >
-        <h1 className={css(styles.title)}>Pedidos Prontos</h1>
+        <h1 className={css(styles.title)}>Pedidos Entregues</h1>
         <div className={css(styles.orderContainer)}>
-          {done.map((item)=>
+          {delivered.map((item)=>
            <div key={item.id} className={css(styles.cardInfo)}>
             <OrderCard 
               sendTime={time(new Date(item.time), new Date(item.sendTime))}
               table={item.table}
               client={item.client}
               total={item.total}
-              orderDone={() => orderDone(item)}
+              orderDelivered={() => orderDelivered(item)}
               order={item.order.map((item, index) => {
                 return(
                   
                   <div key={index} className={css(styles.cardOrder)}>
-                    {item.count} {item.Name}
+                    {item.count} {item.Name} {item.extra} 
                     
 
                     
@@ -218,6 +211,7 @@ export default function Kitchen () {
               })}
                   
             />
+             <div>Total: {item.total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</div>
             </div>
             
             
@@ -230,4 +224,5 @@ export default function Kitchen () {
     
     
   )
-}
+} 
+

@@ -11,7 +11,6 @@ import 'growl-alert/dist/growl-alert.css'
 const styles = StyleSheet.create({
   floorPage: {
     display:"flex",
-  
   },
 
   styleMenu: {
@@ -123,6 +122,11 @@ const styles = StyleSheet.create({
   }
 })
 
+const option = {
+  fadeAway: true,
+  fadeAwayTimeout:2000,
+};
+
 export default function ShowMenu(item){
 
   const [category, setCategory] = useState ('Café da manhã')
@@ -202,17 +206,17 @@ export default function ShowMenu(item){
         order,
         total,
         status:"pending",
-        addTime: new Date().getTime()
+        sendTime: new Date().getTime()
       })
       .then(() => {
-        growl.success("Pedido enviado")
+        growl.success({ text: "Pedido enviado", ...option})
         setClient('')
         setTable('')
         setOrder([])
         setTotal(0)
       })
     }else {
-      growl.warning("Preencha nome e mesa")
+      growl.warning({ text:"Preencha nome e mesa", ...option})
     }
   }
 

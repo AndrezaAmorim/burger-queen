@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, css} from 'aphrodite'
-import Button from './Button'
+
 
 const styles = StyleSheet.create({
 
@@ -32,6 +32,10 @@ export default function OrderCard(props){
       </div>
       
       {props.order}
+
+      <div className={css(styles.styleTime)}>
+        {props.sendTime}
+      </div>
       
     </>
   )
