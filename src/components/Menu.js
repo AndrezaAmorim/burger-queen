@@ -4,7 +4,6 @@ import Button from './Button'
 
 const styles = StyleSheet.create({
   btnItens: {
-
     color: "#1C1C1C",
     backgroundColor:"#FFFAF0",
     borderRadius:"15px",
@@ -22,12 +21,10 @@ const styles = StyleSheet.create({
     ':hover': {
       backgroundColor: "rgb(221, 111, 38)",
       color: "#fff",
-      
     },
   },
 
   btnAdd: {
-   
     fontSize:"23px",
     fontWeight:"bold",
     backgroundColor:"#32CD32",
@@ -37,8 +34,6 @@ const styles = StyleSheet.create({
     width: "120px",
     height:"50px",
     marginTop:"20px"
-    
-    
   },
 
   modalBackground: {
@@ -67,7 +62,6 @@ const styles = StyleSheet.create({
     height:"2em"
   }
 })
-
 
 export default function Menu(props) {
   const [show, setShow] = useState(false);
@@ -103,7 +97,9 @@ export default function Menu(props) {
                 {props.item.Extras.map((extra, index) => {
                   return (
                     <div key={index}>
-                      <label>{extra.Name} {extra.Price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</label>
+                      <label>
+                        {extra.Name} {extra.Price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                      </label>
                       <input className={css(styles.inputModal)}
                         type="radio" 
                         value={extra.Name} 
