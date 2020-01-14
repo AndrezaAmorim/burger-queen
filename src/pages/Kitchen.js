@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import firebase from '../utils/Firebase';
 import OrderCard from '../components/OrderCard'
 import {StyleSheet, css} from 'aphrodite'
@@ -6,17 +6,11 @@ import Button from '../components/Button'
 import growl from 'growl-alert'
 import 'growl-alert/dist/growl-alert.css'
 
-
 const styles = StyleSheet.create({
 
   cardOrder:{
     backgroundColor:"white",
-    
-    
-    
-    
   },
-  
 
   btnSend: {
     color: "white",
@@ -50,7 +44,6 @@ const styles = StyleSheet.create({
     overflow:"auto",
     width:"700px",
     height:"480px",
-
   },
 
   cardContainer:{
@@ -64,7 +57,6 @@ const styles = StyleSheet.create({
     marginLeft:"1%",
     marginRight:"1%",
     marginTop:"10px",
-   
   },
 
   title: {
@@ -79,7 +71,6 @@ const styles = StyleSheet.create({
   },
 
   cardInfo:{
-    
     border:" 1px solid black ",
     borderRadius:"5px",
     marginBottom:"20px",
@@ -87,11 +78,7 @@ const styles = StyleSheet.create({
     textAlign:"center",
     fontSize:"20px",
     padding:"20px"
-    
   }, 
-
-  
-
 })
 
 const option = {
@@ -101,7 +88,6 @@ const option = {
 
 export default function Kitchen () {
 
-  
   const [pending, setPending] = useState ([])
   const [done, setDone] = useState([])
 
@@ -119,12 +105,9 @@ export default function Kitchen () {
       
       setPending(docOrder.filter(doc => doc.status === "pending"))
       setDone(docOrder.filter((doc) => doc.status === "done"))
-      
-      
     })
   }, []) 
   
-
   function orderDone (item) {
     
     firebase
@@ -132,7 +115,6 @@ export default function Kitchen () {
     .collection("Orders")
     .doc(item.id)
     .update({
-      
       status:"done",
       time: new Date().getTime()
     })
@@ -165,30 +147,21 @@ export default function Kitchen () {
               orderDone={() => orderDone(item)}
               order={item.order.map((item, index) => {
                 return(
-                  
                   <div key={index} className={css(styles.cardOrder)}>
                     {item.Name}
                     {item.count}
-
-                    
                   </div>
-                  
-                  
-                 
                 )
-
               })}
             />
             <Button className={css(styles.btnSend)} 
-                  handleClick={(e) => { 
-                    
-                    orderDone(item)
-                    e.preventDefault() 
-                  }}title={"Pronto"} 
-                  />
-            </div>
+              handleClick={(e) => { 
+                orderDone(item)
+                e.preventDefault() 
+              }}title={"Pronto"} 
+            />
+          </div>
           )}
-          
         </div>  
       </div>
       <div className={css(styles.cardContainer)} >
@@ -196,38 +169,24 @@ export default function Kitchen () {
         <div className={css(styles.orderContainer)}>
           {done.map((item)=>
            <div key={item.id} className={css(styles.cardInfo)}>
-            <OrderCard 
-              sendTime={time(new Date(item.time), new Date(item.sendTime))}
-              table={item.table}
-              client={item.client}
-              total={item.total}
-              orderDone={() => orderDone(item)}
-              order={item.order.map((item, index) => {
-                return(
-                  
-                  <div key={index} className={css(styles.cardOrder)}>
-                    {item.count} {item.Name}
-                    
-
-                    
-                  </div>
-                 
-                )
-                
-
-              })}
-                  
-            />
+              <OrderCard 
+                sendTime={time(new Date(item.time), new Date(item.sendTime))}
+                table={item.table}
+                client={item.client}
+                total={item.total}
+                orderDone={() => orderDone(item)}
+                order={item.order.map((item, index) => {
+                  return(
+                    <div key={index} className={css(styles.cardOrder)}>
+                      {item.count} {item.Name}
+                    </div>
+                  )
+                })}
+              />
             </div>
-            
-            
           )}
-          
-
         </div>    
       </div> 
     </div>
-    
-    
   )
 }

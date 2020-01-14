@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, css} from 'aphrodite'
 
-
 const styles = StyleSheet.create({
 
   styleName:{
@@ -17,12 +16,16 @@ const styles = StyleSheet.create({
     color:"#363636"
   },
 
+  styleTime:{
+    marginTop:"2%",
+    fontWeight:"bold",
+    color:"#363636"
+  }
 })
 
 export default function OrderCard(props){
 
   return(
-    
     <>
       <div className={css(styles.styleName)}>
         {props.client}
@@ -30,13 +33,10 @@ export default function OrderCard(props){
       <div className={css(styles.styleTable)}>
         Mesa: {props.table}
       </div>
-      
       {props.order}
-
       <div className={css(styles.styleTime)}>
         {props.sendTime}
       </div>
-      
     </>
   )
 }

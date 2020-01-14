@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
     color: "white",
     width: "40px",
     height:"40px",
-    
 
     ':active': {
       position:"relative",
@@ -28,7 +27,6 @@ const styles = StyleSheet.create({
     borderRadius:"20px",
     border:"none",
     fontSize:"25px",
-    
   },
 
   btnMinusItem: {
@@ -60,8 +58,6 @@ const styles = StyleSheet.create({
     justifyContent:"space-evenly",
     marginTop:"5%"
   },
-
-  
 })
 
 export default function Order (props) {
@@ -76,23 +72,19 @@ export default function Order (props) {
         <span> + {props.item.extra} </span>
         {itemPrice.toLocaleString("pt-BR", { style:"currency", currency: "BRL"})}
         <div className={css(styles.listOption)}>
-          
           <Button className={css(styles.btnMinusItem)} 
             handleClick={(e) => 
               {props.minusItem(props.item, props.item.extra)
               e.preventDefault()
             }} title={"-"}
           />
-          
           {props.item.count}
-
           <Button className={css(styles.btnAdd)} 
             handleClick={(e) => {
               props.addItem(props.item, props.item.extra) 
               e.preventDefault()
             }} title={"+"} 
           />
-
           <Button className={css(styles.btnRemoveItem)} 
             handleClick={(e) => {
               props.removeItem(props.item) 

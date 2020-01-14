@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
     marginRight:"1%",
     borderRadius:"5px",
     border:"1px solid grey",
-    
   },
 
   title: {
@@ -83,7 +82,6 @@ const styles = StyleSheet.create({
   },
 
   inputPosition: {
-   
     display:"flex",
     justifyContent:"space-evenly"
   },
@@ -101,8 +99,6 @@ const styles = StyleSheet.create({
     justifyContent:"center",
     height:"20%",
     width:"100%",
-    
-    
   },
 
   listItens:{
@@ -118,7 +114,6 @@ const styles = StyleSheet.create({
     fontWeight:"bold",
     fontSize:"18px",
     marginLeft:"190px",
-    
   }
 })
 
@@ -129,9 +124,9 @@ const option = {
 
 export default function ShowMenu(item){
 
-  const [category, setCategory] = useState ('Café da manhã')
-  const [client, setClient] = useState('')
-  const [table, setTable] = useState('')
+  const [category, setCategory] = useState ("Café da manhã")
+  const [client, setClient] = useState("")
+  const [table, setTable] = useState("")
   const [order, setOrder] = useState([])
   const [total, setTotal] = useState (0) 
   const [itensBreakfast, setItensBreakfast] = useState([]) 
@@ -160,13 +155,12 @@ export default function ShowMenu(item){
       if(extra){
         setOrder([...order, { ...item, count: 1, extra }])
       }else{
-      setOrder([...order, { ...item, count: 1 }])
+        setOrder([...order, { ...item, count: 1 }])
       }
     } else {
       const newOrder = [...order];
       newOrder[itemIndex].count += 1;
       setOrder(newOrder);
-     
     }
     const extraPrice = extra ? 1:0;
     setTotal(total + (item.Price + extraPrice ))
@@ -180,7 +174,6 @@ export default function ShowMenu(item){
     } else {
       itemCount.count += -1;
       setOrder([...order]);
-      
     }
     const extraPrice = extra ? 1:0;
     setTotal(total - (item.Price + extraPrice))
@@ -210,8 +203,8 @@ export default function ShowMenu(item){
       })
       .then(() => {
         growl.success({ text: "Pedido enviado", ...option})
-        setClient('')
-        setTable('')
+        setClient("")
+        setTable("")
         setOrder([])
         setTotal(0)
       })
@@ -242,14 +235,13 @@ export default function ShowMenu(item){
           {categoryItems.map((item) => <Menu key={item.id} item={item} addItem={addItem}/>)}
         </div>
       </div>
-      
       <div className={css(styles.styleMenu)}>
         <h2 className={css(styles.title)}>Pedido</h2>
         <div className={css(styles.inputPosition)}>
-          <Input className={css(styles.inputMenu)} holder='Cliente' type='text' value={client} 
+          <Input className={css(styles.inputMenu)} holder="Cliente" type="text" value={client} 
             handleChange={e => setClient(e.currentTarget.value)} 
           />
-          <Input className ={css(styles.inputMenu)} holder='Mesa' type='text' value={table} 
+          <Input className ={css(styles.inputMenu)} holder="Mesa" type="text" value={table} 
             handleChange={e => setTable(e.currentTarget.value)}
           />
         </div>
@@ -257,13 +249,14 @@ export default function ShowMenu(item){
           {order.map((item) => <Order key={item.id} item={item} addItem={addItem} 
           minusItem={minusItem} removeItem={removeItem}/>)}
         </div>
-          <div className={css(styles.total)}>
-            Total {total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</div>
-          <Button className={css(styles.btnSend)} 
-         handleClick={(e) => { 
-           sendOrder()
-           e.preventDefault() 
-         }}title={"Enviar"} 
+        <div className={css(styles.total)}>
+          Total {total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+        </div>
+        <Button className={css(styles.btnSend)} 
+          handleClick={(e) => { 
+            sendOrder()
+            e.preventDefault() 
+          }}title={"Enviar"} 
        />
       </div>
     </div>

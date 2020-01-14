@@ -6,17 +6,12 @@ import Button from '../components/Button'
 import growl from 'growl-alert'
 import 'growl-alert/dist/growl-alert.css'
 
-
 const styles = StyleSheet.create({
 
   cardOrder:{
     backgroundColor:"white",
-    
-
-    
   },
   
-
   btnSend: {
     color: "white",
     backgroundColor:"#32CD32",
@@ -49,7 +44,6 @@ const styles = StyleSheet.create({
     overflow:"auto",
     width:"700px",
     height:"480px",
-
   },
 
   cardContainer:{
@@ -63,7 +57,6 @@ const styles = StyleSheet.create({
     marginLeft:"1%",
     marginRight:"1%",
     marginTop:"10px",
-   
   },
 
   title: {
@@ -78,7 +71,6 @@ const styles = StyleSheet.create({
   },
 
   cardInfo:{
-    
     border:" 1px solid black ",
     borderRadius:"5px",
     marginBottom:"20px",
@@ -86,11 +78,13 @@ const styles = StyleSheet.create({
     textAlign:"center",
     fontSize:"20px",
     padding:"20px"
-    
   }, 
 
-  
-
+  styleTotal:{
+    marginTop:"2%",
+    fontWeight:"bold",
+    color:"#363636"
+  }
 })
 
 const option = {
@@ -115,27 +109,25 @@ export default function Bartender () {
         ...doc.data()
       }))      
       
-      setDone(docOrder.filter(doc => doc.status === 'done'))
-      setDelivered(docOrder.filter(doc => doc.status === 'delivered'))
-      
-      
+      setDone(docOrder.filter(doc => doc.status === "done"))
+      setDelivered(docOrder.filter(doc => doc.status === "delivered"))
     })
   }, []) 
 
   function orderDelivered(item){
     firebase
     .firestore()
-    .collection('Orders')
+    .collection("Orders")
     .doc(item.id)
     .update({
-      status: 'delivered',
+      status: "delivered",
       time: new Date().getTime()
     })
 
     const newDone = done.filter((el) => el.id !== item.id);
     setDone(newDone);
 
-    const newDelivered = [...delivered, {...item, status: 'delivered', time: new Date().getTime()}];
+    const newDelivered = [...delivered, {...item, status: "delivered", time: new Date().getTime()}];
     setDelivered(newDelivered);
 
     growl.success({ text: "Pedido entregue", ...option})
@@ -158,30 +150,21 @@ export default function Bartender () {
               client={item.client}
               order={item.order.map((item, index) => {
                 return(
-                  
                   <div key={index} className={css(styles.cardOrder)}>
                     {item.count}
                     {item.Name} {item.extra}
-
-                    
                   </div>
-                  
-                  
-                 
                 )
-
               })}
             />
             <Button className={css(styles.btnSend)} 
-                  handleClick={(e) => { 
-                    
-                    orderDelivered(item)
-                    e.preventDefault() 
-                  }}title={"Pedido Entregue"} 
-                  />
-            </div>
+              handleClick={(e) => { 
+                orderDelivered(item)
+                e.preventDefault() 
+              }}title={"Pedido Entregue"} 
+            />
+          </div>
           )}
-          
         </div>  
       </div>
       <div className={css(styles.cardContainer)} >
@@ -189,40 +172,28 @@ export default function Bartender () {
         <div className={css(styles.orderContainer)}>
           {delivered.map((item)=>
            <div key={item.id} className={css(styles.cardInfo)}>
-            <OrderCard 
-              sendTime={time(new Date(item.time), new Date(item.sendTime))}
-              table={item.table}
-              client={item.client}
-              total={item.total}
-              orderDelivered={() => orderDelivered(item)}
-              order={item.order.map((item, index) => {
-                return(
-                  
-                  <div key={index} className={css(styles.cardOrder)}>
-                    {item.count} {item.Name} {item.extra} 
-                    
-
-                    
-                  </div>
-                 
-                )
-                
-
-              })}
-                  
-            />
-             <div>Total: {item.total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</div>
+              <OrderCard 
+                sendTime={time(new Date(item.time), new Date(item.sendTime))}
+                table={item.table}
+                client={item.client}
+                total={item.total}
+                orderDelivered={() => orderDelivered(item)}
+                order={item.order.map((item, index) => {
+                  return(
+                    <div key={index} className={css(styles.cardOrder)}>
+                      {item.count} {item.Name} {item.extra} 
+                    </div>
+                  )
+                })}
+              />
+              <div className={css(styles.styleTotal)}>
+                Total: {item.total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+              </div>
             </div>
-            
-            
           )}
-          
-
         </div>    
       </div> 
     </div>
-    
-    
   )
 } 
 

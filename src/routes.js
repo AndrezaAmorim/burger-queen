@@ -3,12 +3,11 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-} from "react-router-dom";
+} from 'react-router-dom';
 import Navbar from './components/Nav';
 import Floor from './pages/Floor';
 import Kitchen from './pages/Kitchen';
 import Bartender from './pages/Bartender'
-
 
 export default function App() {
   return (
