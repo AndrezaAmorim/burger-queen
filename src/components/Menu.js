@@ -24,6 +24,11 @@ const styles = StyleSheet.create({
     },
   },
 
+  btnPosition:{
+    display:"flex",
+    justifyContent:"space-around"
+  },
+
   btnAdd: {
     fontSize:"23px",
     fontWeight:"bold",
@@ -31,8 +36,20 @@ const styles = StyleSheet.create({
     borderRadius:"5px",
     border:"none",
     color: "white",
-    width: "120px",
-    height:"50px",
+    width: "125px",
+    height:"55px",
+    marginTop:"20px"
+  },
+
+  btnNoAdd:{
+    fontSize:"23px",
+    fontWeight:"bold",
+    backgroundColor:"grey",
+    borderRadius:"5px",
+    border:"none",
+    color: "white",
+    width: "125px",
+    height:"55px",
     marginTop:"20px"
   },
 
@@ -46,8 +63,8 @@ const styles = StyleSheet.create({
   },
 
   modal: {
-    width: "200px",
-    height:"180px",
+    width: "280px",
+    height:"210px",
     background: "white",
     borderRadius: "10px",
     padding: "20px",
@@ -110,6 +127,15 @@ export default function Menu(props) {
                     </div>
                   )
                 })}
+                <div className={css(styles.btnPosition)}>
+                  <Button className={css(styles.btnNoAdd)}
+                    handleClick={(e) => {
+                      props.addItem(props.item);
+                      e.preventDefault();
+                      setShow(!show);
+                    }}
+                    title={"Sem Adicional"}
+                  />
                   <Button className={css(styles.btnAdd)}
                     handleClick={(e) => {
                       props.addItem(props.item, selectedExtra);
@@ -119,6 +145,7 @@ export default function Menu(props) {
                     }}
                     title={"Adicionar"}
                   />
+                </div>  
               </div>
             </div>
           : null        

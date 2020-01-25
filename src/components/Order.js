@@ -68,30 +68,28 @@ export default function Order (props) {
   return (
     <div>
       <div className={css(styles.listOrder)}>
-        <span>{props.item.Name} </span>
-        <span> + {props.item.extra} </span>
-        {itemPrice.toLocaleString("pt-BR", { style:"currency", currency: "BRL"})}
-        <div className={css(styles.listOption)}>
-          <Button className={css(styles.btnMinusItem)} 
-            handleClick={(e) => 
-              {props.minusItem(props.item, props.item.extra)
-              e.preventDefault()
-            }} title={"-"}
-          />
-          {props.item.count}
-          <Button className={css(styles.btnAdd)} 
-            handleClick={(e) => {
-              props.addItem(props.item, props.item.extra) 
-              e.preventDefault()
-            }} title={"+"} 
-          />
-          <Button className={css(styles.btnRemoveItem)} 
-            handleClick={(e) => {
-              props.removeItem(props.item) 
-              e.preventDefault()
-            }} title={"🗑"} 
-          />
-        </div>
+      <span>{props.item.Name}</span> <span>{props.item.extra}</span> = {itemPrice.toLocaleString("pt-BR", { style:"currency", currency: "BRL"})}
+      <div className={css(styles.listOption)}>
+        <Button className={css(styles.btnMinusItem)} 
+          handleClick={(e) => 
+            {props.minusItem(props.item, props.item.extra)
+            e.preventDefault()
+          }} title={"-"}
+        />
+        {props.item.count}
+        <Button className={css(styles.btnAdd)} 
+          handleClick={(e) => {
+            props.addItem(props.item, props.item.extra) 
+            e.preventDefault()
+          }} title={"+"} 
+        />
+        <Button className={css(styles.btnRemoveItem)} 
+          handleClick={(e) => {
+            props.removeItem(props.item) 
+            e.preventDefault()
+          }} title={"🗑"} 
+        />
+      </div>
       </div>
     </div>
   )

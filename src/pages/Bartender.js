@@ -135,7 +135,12 @@ export default function Bartender () {
 
   function time(readyTime, orderTime){
     const diffTime = ((readyTime.getTime() - orderTime.getTime()) / 1000) / 60;
-    return `${Math.abs(Math.round(diffTime))}min`;
+    if(diffTime <=60){
+      return `${Math.abs(Math.round(diffTime))}min para ser entregue`;
+    }else{
+      const diffTime = (((readyTime.getTime() - orderTime.getTime()) / 1000) / 60) / 60;
+      return `${Math.abs(Math.round(diffTime))}horas para ser entregue`;
+    }
   }
 
   return(
