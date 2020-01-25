@@ -136,10 +136,10 @@ export default function Bartender () {
   function time(readyTime, orderTime){
     const diffTime = ((readyTime.getTime() - orderTime.getTime()) / 1000) / 60;
     if(diffTime <=60){
-      return `${Math.abs(Math.round(diffTime))}min para ser entregue`;
+      return `Pedido entregue em ${Math.abs(Math.round(diffTime))} min`;
     }else{
       const diffTime = (((readyTime.getTime() - orderTime.getTime()) / 1000) / 60) / 60;
-      return `${Math.abs(Math.round(diffTime))}horas para ser entregue`;
+      return `Pedido entregue em ${Math.abs(Math.round(diffTime))} horas`;
     }
   }
 

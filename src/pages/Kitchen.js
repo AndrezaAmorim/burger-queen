@@ -129,7 +129,12 @@ export default function Kitchen () {
 
   function time(readyTime, orderTime){
     const diffTime = ((readyTime.getTime() - orderTime.getTime()) / 1000) / 60;
-    return `${Math.abs(Math.round(diffTime))}min`;
+    if(diffTime <=60){
+      return `Preparado em ${Math.abs(Math.round(diffTime))} min`;
+    }else{
+      const diffTime = (((readyTime.getTime() - orderTime.getTime()) / 1000) / 60) / 60;
+      return `Preparado em ${Math.abs(Math.round(diffTime))} horas`;
+    }
   }
 
   return(
