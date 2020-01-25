@@ -153,7 +153,7 @@ export default function ShowMenu(item){
     const itemIndex = order.findIndex((el) => el.id === item.id && el.extra ===extra);
     if (itemIndex === -1) {
       if(extra){
-        setOrder([...order, { ...item, count: 1, extra }])
+        setOrder([...order, { ...item,count: 1, extra: ` com ${extra}` }])
       }else{
         setOrder([...order, { ...item, count: 1 }])
       }
@@ -180,16 +180,15 @@ export default function ShowMenu(item){
   }
 
   function removeItem(item) {
-    const index = (order.indexOf(item));
-    const extraPrice = item.extra ? 1 : 0
-    order.splice(index, 1);
-    setOrder([...order]);
+    const product = order.filter(el => el !== item);
+    const extraPrice = item.extra ? 1 : 0;
+    setOrder([...product]);
     setTotal(total - ((item.Price  + extraPrice) * item.count))
   }
 
   function sendOrder(){
     
-    if(client && table){
+    if(client && table && order.length){
       firebase
       .firestore()
       .collection("Orders")
@@ -208,8 +207,14 @@ export default function ShowMenu(item){
         setOrder([])
         setTotal(0)
       })
-    }else {
-      growl.warning({ text:"Preencha nome e mesa", ...option})
+    }else if (!order.length) {
+      growl.warning({text: 'Adicione um item', ...option})
+
+    } else if (!client){
+      growl.warning({text: 'Preencha nome', ...option})
+      
+    } else if (!table){
+    growl.warning({text: 'Preencha mesa', ...option})
     }
   }
 

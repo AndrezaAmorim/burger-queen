@@ -7,7 +7,7 @@ import {
 import Navbar from './components/Nav';
 import Floor from './pages/Floor';
 import Kitchen from './pages/Kitchen';
-import Bartender from './pages/Bartender'
+import Bartender from './pages/Bartender';
 
 export default function App() {
   return (
