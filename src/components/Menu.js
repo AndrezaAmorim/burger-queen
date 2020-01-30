@@ -84,7 +84,7 @@ export default function Menu(props) {
   const [show, setShow] = useState(false);
   const [selectedExtra, setSelectedExtra] = useState("");  
   
-  if (props.item.Type !== "Hambúrgueres") {
+  if (props.item.Type !== "Hambúrgueres Simples" && props.item.Type !== "Hambúrgueres Duplo") {
     return (
       <Button
         className={css(styles.btnItens)}
