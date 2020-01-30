@@ -150,7 +150,9 @@ export default function ShowMenu(item){
   const categoryItems = category ==="Lanches" ? itensLunch : itensBreakfast
 
   function addItem(item, extra){ 
-    const itemIndex = order.findIndex((el) => el.id === item.id && el.extra ===extra);
+   
+    const itemIndex = order.findIndex((el) => el.id === item.id || el.extra === ` com ${extra}`);
+    
     if (itemIndex === -1) {
       if(extra){
         setOrder([...order, { ...item,count: 1, extra: ` com ${extra}` }])
@@ -251,7 +253,7 @@ export default function ShowMenu(item){
           />
         </div>
         <div className={css(styles.listItens)}>
-          {order.map((item) => <Order key={item.id} item={item} addItem={addItem} 
+          {order.map((item, i) => <Order key={i} item={item} addItem={addItem} 
           minusItem={minusItem} removeItem={removeItem}/>)}
         </div>
         <div className={css(styles.total)}>
