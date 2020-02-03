@@ -151,11 +151,11 @@ export default function ShowMenu(item){
 
   function addItem(item, extra){ 
    
-    const itemIndex = order.findIndex((el) => el.id === item.id || el.extra === ` com ${extra}`);
+    const itemIndex = order.findIndex((el) => el.id === item.id && el.extra === extra);
     
     if (itemIndex === -1) {
       if(extra){
-        setOrder([...order, { ...item,count: 1, extra: ` com ${extra}` }])
+        setOrder([...order, { ...item,count: 1, extra: extra }])
       }else{
         setOrder([...order, { ...item, count: 1 }])
       }
